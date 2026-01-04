@@ -163,12 +163,7 @@ app.post("/pay", async (req, res) => {
   writeReceipts(receiptsNow);
   clearInterval(interval);
 }
-              current.status = "cancelled";
-              current.transaction_code = payData.mpesa_receipt_number || null;
-              current.status_note = payData.failure_reason || "Payment failed or cancelled.";
-              current.timestamp = new Date().toISOString();
-              writeReceipts(receiptsNow);
-              clearInterval(interval);
+
           } catch (err) {
             // Log error but keep polling; network or 404 will surface here if transaction not found.
             console.log(`[${reference}] PayNecta poll error:`, err.response?.status || err.message);
