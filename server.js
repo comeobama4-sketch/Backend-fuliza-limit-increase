@@ -169,7 +169,6 @@ app.post("/pay", async (req, res) => {
               current.timestamp = new Date().toISOString();
               writeReceipts(receiptsNow);
               clearInterval(interval);
-            } // else still pending - continue polling
           } catch (err) {
             // Log error but keep polling; network or 404 will surface here if transaction not found.
             console.log(`[${reference}] PayNecta poll error:`, err.response?.status || err.message);
