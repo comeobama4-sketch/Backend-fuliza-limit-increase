@@ -17,13 +17,13 @@ const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_wEtDzGQCbKLeISuPOc
 const PAYNECTA_CODE = process.env.PAYNECTA_CODE || "PNT_609202";
 
 // The callback URL PayNecta will call (use your tested backend domain)
-const CALLBACK_URL = process.env.CALLBACK_URL || "https://backend-fuliza-limit-increase.onrender.com";
+const CALLBACK_URL = process.env.CALLBACK_URL || "https://abels-test-stk-push.onrender.com/callback";
 
 // JSON storage file for receipts
 const receiptsFile = path.join(__dirname, "receipts.json");
 
 // CORS origin: keep frontend intact
-const FRONTEND_ORIGIN = "https://fuliza-inc.vercel.app";
+const FRONTEND_ORIGIN = "https://finance-tech-vowr.onrender.com";
 
 // Middleware
 app.use(bodyParser.json());
@@ -137,33 +137,27 @@ app.post("/pay", async (req, res) => {
               return;
             }
 
-             if (payStatus === "completed" || payStatus === "processing") {
-  current.status = payStatus;
-
-  current.transaction_code =
-    payData.mpesa_receipt_number ||
-    payData.mpesa_transaction_id ||
-    current.transaction_code;
-
-  current.amount = payData.amount || current.amount;
-  current.phone = payData.mobile_number || current.phone;
-  current.customer_name = current.customer_name || "N/A";
-  current.status_note = `✅ Your fee payment has been received and verified. Loan Reference: ${reference}. Loan processing started.`;
-  current.timestamp = new Date().toISOString();
-
-  writeReceipts(receiptsNow);
-  clearInterval(interval);
-
-} else if (payStatus === "failed" || payStatus === "cancelled") {
-  current.status = "cancelled";
-  current.transaction_code = payData.mpesa_receipt_number || null;
-  current.status_note = payData.failure_reason || "Payment failed or cancelled.";
-  current.timestamp = new Date().toISOString();
-
-  writeReceipts(receiptsNow);
-  clearInterval(interval);
+             if (payStatus === "completed") {
+  current.status = "completed";
+} else if (payStatus === "processing") {
+  current.status = "processing";
 }
-
+              current.transaction_code = payData.mpesa_receipt_number || payData.mpesa_transaction_id || current.transaction_code;
+              current.amount = payData.amount || current.amount;
+              current.phone = payData.mobile_number || current.phone;
+              current.customer_name = current.customer_name || "N/A";
+              current.status_note = `✅ Your fee payment has been received and verified. Loan Reference: ${reference}. Loan processing started.`;
+              current.timestamp = new Date().toISOString();
+              writeReceipts(receiptsNow);
+              clearInterval(interval);
+            } else if (payStatus === "failed" || payStatus === "cancelled") {
+              current.status = "cancelled";
+              current.transaction_code = payData.mpesa_receipt_number || null;
+              current.status_note = payData.failure_reason || "Payment failed or cancelled.";
+              current.timestamp = new Date().toISOString();
+              writeReceipts(receiptsNow);
+              clearInterval(interval);
+            } // else still pending - continue polling
           } catch (err) {
             // Log error but keep polling; network or 404 will surface here if transaction not found.
             console.log(`[${reference}] PayNecta poll error:`, err.response?.status || err.message);
