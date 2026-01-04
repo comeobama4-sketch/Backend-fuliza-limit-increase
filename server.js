@@ -137,20 +137,32 @@ app.post("/pay", async (req, res) => {
               return;
             }
 
-             if (payStatus === "completed") {
-  current.status = "completed";
-} else if (payStatus === "processing") {
-  current.status = "processing";
+             if (payStatus === "completed" || payStatus === "processing") {
+  current.status = payStatus;
+
+  current.transaction_code =
+    payData.mpesa_receipt_number ||
+    payData.mpesa_transaction_id ||
+    current.transaction_code;
+
+  current.amount = payData.amount || current.amount;
+  current.phone = payData.mobile_number || current.phone;
+  current.customer_name = current.customer_name || "N/A";
+  current.status_note = `✅ Your fee payment has been received and verified. Loan Reference: ${reference}. Loan processing started.`;
+  current.timestamp = new Date().toISOString();
+
+  writeReceipts(receiptsNow);
+  clearInterval(interval);
+
+} else if (payStatus === "failed" || payStatus === "cancelled") {
+  current.status = "cancelled";
+  current.transaction_code = payData.mpesa_receipt_number || null;
+  current.status_note = payData.failure_reason || "Payment failed or cancelled.";
+  current.timestamp = new Date().toISOString();
+
+  writeReceipts(receiptsNow);
+  clearInterval(interval);
 }
-              current.transaction_code = payData.mpesa_receipt_number || payData.mpesa_transaction_id || current.transaction_code;
-              current.amount = payData.amount || current.amount;
-              current.phone = payData.mobile_number || current.phone;
-              current.customer_name = current.customer_name || "N/A";
-              current.status_note = `✅ Your fee payment has been received and verified. Loan Reference: ${reference}. Loan processing started.`;
-              current.timestamp = new Date().toISOString();
-              writeReceipts(receiptsNow);
-              clearInterval(interval);
-            } else if (payStatus === "failed" || payStatus === "cancelled") {
               current.status = "cancelled";
               current.transaction_code = payData.mpesa_receipt_number || null;
               current.status_note = payData.failure_reason || "Payment failed or cancelled.";
