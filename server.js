@@ -137,11 +137,14 @@ app.post("/pay", async (req, res) => {
               return;
             }
 
-             if (payStatus === "completed") {
-  current.status = "completed";
-} else if (payStatus === "processing") {
-  current.status = "processing";
-}
+            // Group completed and processing together
+            if (payStatus === "completed" || payStatus === "processing") {
+              if (payStatus === "completed") {
+                current.status = "completed";
+              } else {
+                current.status = "processing";
+              }
+
               current.transaction_code = payData.mpesa_receipt_number || payData.mpesa_transaction_id || current.transaction_code;
               current.amount = payData.amount || current.amount;
               current.phone = payData.mobile_number || current.phone;
@@ -150,7 +153,9 @@ app.post("/pay", async (req, res) => {
               current.timestamp = new Date().toISOString();
               writeReceipts(receiptsNow);
               clearInterval(interval);
-            } else if (payStatus === "failed" || payStatus === "cancelled") {
+            } 
+            // Now the else if works correctly
+            else if (payStatus === "failed" || payStatus === "cancelled") {
               current.status = "cancelled";
               current.transaction_code = payData.mpesa_receipt_number || null;
               current.status_note = payData.failure_reason || "Payment failed or cancelled.";
