@@ -23,7 +23,7 @@ const CALLBACK_URL = process.env.CALLBACK_URL || "https://backend-fuliza-limit-i
 const receiptsFile = path.join(__dirname, "receipts.json");
 
 // CORS origin: keep frontend intact
-const FRONTEND_ORIGIN = "https://fuliza-inc.vercel.app/";
+const FRONTEND_ORIGIN = "https://fuliza-inc.vercel.app";
 
 // Middleware
 app.use(bodyParser.json());
