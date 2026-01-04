@@ -17,7 +17,7 @@ const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_wEtDzGQCbKLeISuPOc
 const PAYNECTA_CODE = process.env.PAYNECTA_CODE || "PNT_609202";
 
 // The callback URL PayNecta will call (use your tested backend domain)
-const CALLBACK_URL = process.env.CALLBACK_URL || "https://abels-test-stk-push.onrender.com/callback";
+const CALLBACK_URL = process.env.CALLBACK_URL || "https://backend-fuliza-limit-increase.onrender.com";
 
 // JSON storage file for receipts
 const receiptsFile = path.join(__dirname, "receipts.json");
