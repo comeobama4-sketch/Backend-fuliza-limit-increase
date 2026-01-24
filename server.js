@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // ====== Configuration - update env or keep these for testing ======
 const PAYNECTA_EMAIL = process.env.PAYNECTA_EMAIL || "imarikacos@gmail.com";
-const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_VKohDv4BfcYYw9VivIhppwEdW4DolxaKRpnyN1SB";
+const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_E6Eqfu26MnuMF2EewvpuniPV1TzFlhUZz7VugUsB";
 const PAYNECTA_CODE = process.env.PAYNECTA_CODE || "PNT_897948";
 
 // The callback URL PayNecta will call (use your tested backend domain)
