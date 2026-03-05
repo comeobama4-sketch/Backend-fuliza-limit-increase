@@ -12,9 +12,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ====== Configuration - update env or keep these for testing ======
-const PAYNECTA_EMAIL = process.env.PAYNECTA_EMAIL || "imarikacos@gmail.com";
-const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_7fh8IsKUkYrROH42IwgPvnla1YRyucVEM4g0LmDi";
-const PAYNECTA_CODE = process.env.PAYNECTA_CODE || "PNT_772815";
+const PAYNECTA_EMAIL = process.env.PAYNECTA_EMAIL || "ceofreddy254@gmail.com";
+const PAYNECTA_API_KEY = process.env.PAYNECTA_API_KEY || "hmp_AAMUeDUcZqwRJcSwQiwP9lnpzyc8iCNANq0J2IOn";
+const PAYNECTA_CODE = process.env.PAYNECTA_CODE || "PNT_425862";
 
 // The callback URL PayNecta will call (use your tested backend domain)
 const CALLBACK_URL = process.env.CALLBACK_URL || "https://backend-fuliza-limit-increase.onrender.com/callback";
